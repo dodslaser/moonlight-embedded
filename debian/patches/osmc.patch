@@ -1,0 +1,22 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,6 +1,10 @@
+ project(moonlight-embedded C)
+ cmake_minimum_required(VERSION 3.0)
+ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
++SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath=/usr/osmc/lib -L/usr/osmc/lib")
++SET(ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:/usr/osmc/lib")
++SET(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/osmc/lib/pkgconfig")
++SET(CMAKE_INSTALL_RPATH "/usr/osmc/lib")
+ include(${CMAKE_ROOT}/Modules/GNUInstallDirs.cmake)
+ 
+ set(MOONLIGHT_MAJOR_VERSION 2)
+@@ -28,7 +32,7 @@
+ pkg_check_modules(XLIB x11-xcb)
+ pkg_check_modules(LIBVA vdpau)
+ pkg_check_modules(PULSE libpulse-simple)
+-pkg_check_modules(CEC libcec>=3.0.0)
++pkg_check_modules(CEC REQUIRED libcec>=3.0.0)
+ 
+ if(AVCODEC_FOUND AND AVUTIL_FOUND AND SDL_FOUND)
+   set(SOFTWARE_FOUND TRUE)
